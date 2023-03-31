@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Box, Button, Flex, FormControl, FormLabel, Input, Stack, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import Cookies from "cookie";
+import Cookiess from "cookie";
+import Cookies from "js-cookie";
 
 export default function Login() {
 
@@ -68,7 +69,7 @@ export default function Login() {
 
 export async function getServerSideProps(context) {
   const { req } = context;
-  const { authToken } = Cookies.parse(req.headers.cookie || "");
+  const { authToken } = Cookiess.parse(req.headers.cookie || "");
 
   if (authToken) {
     return {
