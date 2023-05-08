@@ -1,107 +1,61 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
-import { Button, Container, Flex, Heading, Icon, Link, Stack, Text } from "@chakra-ui/react";
-import { FiLogOut, FiHome, FiUsers, FiSettings, FiHelpCircle } from "react-icons/fi";
-import Cookies from "cookie";
+// pages/dashboard.js
+import { useEffect, useState } from 'react';
+import Navbar from './components/Navbar';
+import axios from 'axios';
+import { Container, Row, Col, Table, Card, CardText, CardHeader, CardBody} from 'reactstrap';
+import { format } from 'date-fns';
+import withAuth from '../hoc/withAuth'; // Importe o HOC
+import StatusAlert from './components/Status-Alert'; // Importe o componente StatusAlert
+import BarChart from './components/Bar-Chart';
 
-export default function Dashboard({ userEmail }) {
-  const router = useRouter();
+function Dashboard(props) {
 
-  const handleLogout = () => {
-    document.cookie = "authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-    router.push("/login");
+  const { userStatus } = props;
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return format(date, 'yyyy-MM-dd');
   };
 
+  useEffect(() => {
+    
+  }, []);
+
   return (
-    <>
-      <Head>
-        <title>Dashboard - Crypto Signals</title>
-        <meta name="description" content="Dashboard page for Crypto Signals" />
-      </Head>
-      <Flex minH="100vh" direction="column">
-        {/* Header */}
-        <Flex bg="blue.900" color="white" align="center" px="4" py="3">
-          <Heading size="md" mr="6">
-            Crypto Signals
-          </Heading>
-          <Button leftIcon={<FiLogOut />} variant="link" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Flex>
-        {/* Body */}
-        <Flex flex="1" direction="row">
-          {/* Sidebar */}
-          <Flex bg="gray.100" w="64" direction="column" p="6">
-            <Stack spacing="4">
-              <Link href="/" display="flex" alignItems="center" fontWeight="semibold">
-                <Icon as={FiHome} mr="2" />
-                Dashboard
-              </Link>
-              <Link href="/users" display="flex" alignItems="center" fontWeight="semibold">
-                <Icon as={FiUsers} mr="2" />
-                Users
-              </Link>
-              <Link href="/settings" display="flex" alignItems="center" fontWeight="semibold">
-                <Icon as={FiSettings} mr="2" />
-                Settings
-              </Link>
-              <Link href="/help" display="flex" alignItems="center" fontWeight="semibold">
-                <Icon as={FiHelpCircle} mr="2" />
-                Help
-              </Link>
-            </Stack>
-          </Flex>
-          {/* Main content */}
-          <Flex flex="1" direction="column" p="6">
-            <Container maxW="container.md">
-              <Text fontSize="xl" mb="4">
-                Olá {userEmail}, seja bem-vindo!
-              </Text>
-              <Text fontSize="md">
-                Bem-vindo à sua dashboard do Crypto Signals. Aqui você pode gerenciar suas preferências de sinalização,
-                configurar notificações e ver informações sobre o seu histórico de negociação.
-              </Text>
-            </Container>
-          </Flex>
-        </Flex>
-      </Flex>
-    </>
+    <div style={{backgroundColor: '#dddddd', paddingBottom: 20}}>
+      <Navbar />
+          <Container className="mt-4">
+            <StatusAlert userStatus={userStatus} />
+            <Row className="h-100">
+              <Col xs="4" className="p-0">
+                <Card className="my-2" color="success" inverse style={{ width: '18rem' }}>
+                  <CardHeader>LOREN IPSUN</CardHeader>
+                  <CardBody>
+                    <CardText>LOREN IPSUN</CardText>
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col xs="6" className="p-0">
+                <Card className="my-2" color="light" inverse style={{ width: '18rem' }}>
+                  <CardBody>
+                  LOREN IPSUN
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+            <Row className="h-100">
+              <Card>
+                <CardBody>
+                LOREN IPSUN
+                </CardBody>
+              </Card>
+            </Row>
+            
+            
+          </Container>
+    </div>
+    
   );
 }
 
-export async function getServerSideProps(context) {
-  const { req } = context;
-  const { authToken } = Cookies.parse(req.headers.cookie || "");
 
-  if (!authToken) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-
-  const response = await fetch("http://localhost:3000/api/getUserEmail", {
-    headers: {
-      Authorization: authToken,
-    },
-  });
-  /*
-  if (!response.ok) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }*/
-
-  const { userEmail } = await response.json();
-
-  return {
-    props: {
-      userEmail,
-    },
-  };
-}
+export default withAuth(Dashboard); // Use o HOC
