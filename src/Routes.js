@@ -12,7 +12,6 @@ import AdminDashboard from './pages/admin-dashboard';
 import AddSignals from './pages/add-signals';
 
 function Router() {
-  console.log('Rendering Routes');
   return (
     <BrowserRouter>
       <Routes>

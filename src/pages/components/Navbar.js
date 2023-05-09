@@ -15,7 +15,7 @@ const Navbar = () => {
           }}
         />
         <Link className="navbar-brand" to="/">
-          CriptoAlpha
+        🏠Signal House🏠
         </Link>
         <button
           className="navbar-toggler"
