@@ -1,5 +1,5 @@
 // pages/add-signals.js
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import axios from "axios";
 import {
@@ -78,9 +78,10 @@ function AddSignals(props) {
   });
   const addEntry = () => {
     const newEntries = [...signalForm.entradas, signalForm.precoEntrada];
+    newEntries.sort((a, b) => a - b); // Ordena em ordem crescente
     setSignalForm({ ...signalForm, entradas: newEntries, precoEntrada: "" });
-    localStorage.setItem("signalForm", JSON.stringify(signalForm));
   };
+  
   const addAlvo = () => {
     if (signalForm.entradas.length > 0) {
       const maxEntry = Math.max(...signalForm.entradas);
@@ -89,11 +90,12 @@ function AddSignals(props) {
         return;
       }
     }
-
+  
     const newEntries = [...signalForm.palvos, signalForm.alvos];
+    newEntries.sort((a, b) => a - b); // Ordena em ordem crescente
     setSignalForm({ ...signalForm, palvos: newEntries, alvos: "" });
-    localStorage.setItem("signalForm", JSON.stringify(signalForm));
   };
+  
 
   const removeEntry = (index) => {
     const newEntries = signalForm.entradas.filter((_, i) => i !== index);
@@ -113,11 +115,12 @@ function AddSignals(props) {
     }
   }, [feito]);
 
-  const handleInputChange = useCallback((event) => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setSignalForm((prevState) => ({ ...prevState, [name]: value }));
+    const upperValue = value.toUpperCase(); // Converte o valor para letras maiúsculas
+    setSignalForm((prevState) => ({ ...prevState, [name]: upperValue }));
     localStorage.setItem("signalForm", JSON.stringify(signalForm));
-  }, []);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -168,13 +171,6 @@ function AddSignals(props) {
       />
       <Container className="mt-4">
         <StatusAlert userStatus={userStatus} />
-        <Row className="h-100 text-center" fluid="true">
-          {sinais && sinais.length > 0
-            ? [...sinais]
-              .reverse()
-              .map((sinal) => <SignalCard key={sinal.id} signal={sinal} />)
-            : ""}
-        </Row>
         <Row className="h-100">
           <Card className="h-100 p-0">
             <CardHeader>Criar Sinal</CardHeader>
@@ -196,7 +192,7 @@ function AddSignals(props) {
                     <FormGroup>
                       <Label for="precoEntrada">Preço de Entrada</Label>
                       <Input
-                        type="text"
+                        type="number"
                         name="precoEntrada"
                         id="precoEntrada"
                         value={signalForm.precoEntrada}
@@ -233,7 +229,7 @@ function AddSignals(props) {
                     <FormGroup>
                       <Label for="alvos">Alvos</Label>
                       <Input
-                        type="text"
+                        type="number"
                         name="alvos"
                         id="alvos"
                         placeholder="Digite os alvos"
@@ -285,6 +281,13 @@ function AddSignals(props) {
               </Form>
             </CardBody>
           </Card>
+        </Row>
+        <Row className="h-100 text-center justify-content-center" fluid="true">
+          {sinais && sinais.length > 0
+            ? [...sinais]
+              .reverse()
+              .map((sinal) => <SignalCard key={sinal.id} signal={sinal} />)
+            : ""}
         </Row>
       </Container>
     </div>
