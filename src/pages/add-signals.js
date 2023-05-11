@@ -266,7 +266,7 @@ function AddSignals(props) {
                 <FormGroup>
                   <Label for="stopLoss">Stop Loss</Label>
                   <Input
-                    type="text"
+                    type="number"
                     name="stopLoss"
                     id="stopLoss"
                     placeholder="Digite o valor do Stop Loss"
