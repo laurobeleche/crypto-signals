@@ -6,9 +6,11 @@ const withAuth = (WrappedComponent) => {
   return (props) => {
     const navigate = useNavigate();
     const [userStatus, setUserStatus] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
       const token = localStorage.getItem('token');
+      
       if (!token) {
         navigate('/login');
         return;
@@ -17,6 +19,7 @@ const withAuth = (WrappedComponent) => {
       try {
         const decodedToken = jwtDecode(token);
         setUserStatus(decodedToken.status); // Adicionado: armazenar o status do usuário no estado
+        setIsAdmin(decodedToken.isAdmin); 
         if (decodedToken.exp < Date.now() / 1000) {
           navigate('/login');
         }
@@ -25,7 +28,7 @@ const withAuth = (WrappedComponent) => {
       }
     }, [navigate]);
     
-    return <WrappedComponent {...props} userStatus={userStatus} />; // Adicionado: passar o status do usuário como uma prop
+    return <WrappedComponent {...props} userStatus={userStatus} isAdmin={isAdmin} />; // Adicionado: passar o status do usuário como uma prop
   };
 };
 

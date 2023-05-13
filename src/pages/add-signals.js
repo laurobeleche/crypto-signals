@@ -170,6 +170,7 @@ function AddSignals(props) {
         bgClass={bgClass}
       />
       <Container className="mt-4">
+        
         <StatusAlert userStatus={userStatus} />
         <Row className="h-100">
           <Card className="h-100 p-0">

@@ -1,5 +1,5 @@
 //./components/Signal-Card.js
-import React from "react";
+import React, {useState, useEffect }from "react";
 import {
   Card,
   CardHeader,
@@ -12,12 +12,15 @@ import {
 } from "reactstrap";
 import { format } from "date-fns";
 import EntradaTooltip from "./EntradaToolTip";
+import LineChartComponent from "./LineChartComponent";
+import axios from "axios";
 
 const SignalCard = ({ signal }) => {
   const entradas = signal.entradas ? signal.entradas.split(",") : [];
   const entradas_at = signal.entrada_at ? signal.entrada_at.split(",") : [];
   const alvos = signal.alvos ? signal.alvos.split(",") : [];
   const alvos_at = signal.alvos_at ? signal.alvos_at.split(",") : [];
+  const [chartData, setChartData] = useState([]);
   entradas.sort((a, b) => {
     return b - a;
   });
@@ -49,7 +52,23 @@ const SignalCard = ({ signal }) => {
     return ('😡 $' + entradas[0] + '( -' +
     (((entradas[0] - signal.stoploss) / entradas[0]) * 100).toFixed(2) + '% )');
   }
-  console.log(stopLoss);
+  useEffect(() => {
+    const fetchChartData = async () => {
+      try {
+        const response = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${signal.crypto}USDT&interval=15m&limit=50`);
+        const rawData = response.data;
+        const data = rawData.map((entry, index) => {
+          return {
+            price: parseFloat(entry[4]) // Close price
+          };
+        });
+        setChartData(data);
+      } catch (error) {
+        console.error('Erro ao buscar dados da Binance:', error);
+      }
+    };
+    fetchChartData();
+  }, [signal.crypto]);
 
   return (
     <Card
@@ -92,7 +111,7 @@ const SignalCard = ({ signal }) => {
           </ListGroupItemHeading>
           {alvos.map((alvo, index) => (
             <ListGroupItem color={colorAlvos[index]} key={alvo} className="p-0">
-              {simbolAlvos[index]} ${alvo}
+              {simbolAlvos[index]} ${alvo} ( {((alvo - entradas[0])/entradas[0]*100).toFixed(2)}% )
             </ListGroupItem>
           ))}
         </ListGroup>
@@ -101,6 +120,9 @@ const SignalCard = ({ signal }) => {
         <CardText className="p-0">STOP LOSS</CardText>
         <CardText className="p-0">
           {stopLoss()}
+        </CardText>
+        <CardText>
+          <LineChartComponent data={chartData} entradas={entradas} alvos={alvos} stop={signal.stoploss} width={180} height={50} />
         </CardText>
       </CardFooter>
     </Card>

@@ -10,7 +10,7 @@ import BarChart from './components/Bar-Chart';
 
 function Dashboard(props) {
 
-  const { userStatus } = props;
+  const { userStatus, isAdmin } = props;
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return format(date, 'yyyy-MM-dd');
@@ -22,7 +22,7 @@ function Dashboard(props) {
 
   return (
     <div style={{backgroundColor: '#dddddd', paddingBottom: 20}}>
-      <Navbar />
+      <Navbar isAdmin={isAdmin} />
           <Container className="mt-4">
             <StatusAlert userStatus={userStatus} />
             <Row className="h-100">
