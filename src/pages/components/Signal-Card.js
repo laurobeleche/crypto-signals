@@ -61,7 +61,6 @@ const SignalCard = ({ signal }) => {
 
   const stopLoss = () => {
     if(alvos_at.length > 0){
-      console.log(alvos_at.length);
       return ('😐 $' + entradas[0] + '( 0% )');
     }
     return ('😡 $' + signal.stoploss + '( -' +
@@ -80,6 +79,11 @@ const SignalCard = ({ signal }) => {
           const stopdateObject = new Date(stopdateString);
           endTime = stopdateObject.getTime();
         }
+        if(alvos_at.length === alvos.length){
+          const dateString = alvos_at[alvos_at.length - 1];
+          const dateObject = new Date(dateString);
+          endTime = dateObject.getTime();
+        }
         const response = await axios.get(`https://api.binance.com/api/v3/klines?symbol=${signal.crypto}USDT&interval=15m&limit=1000&startTime=${start}&endTime=${endTime}`);
         const rawData = response.data;
         const data = rawData.map((entry, index) => {
@@ -93,7 +97,7 @@ const SignalCard = ({ signal }) => {
       }
     };
     fetchChartData();
-  }, [signal.crypto]);
+  });
 
   return (
 
