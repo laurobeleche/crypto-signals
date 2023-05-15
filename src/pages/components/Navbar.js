@@ -10,6 +10,7 @@ import {
   Nav,
   NavItem,
   NavbarText,
+  NavLink,
 } from 'reactstrap';
 
 const Navbar = (props) => {
@@ -21,11 +22,11 @@ const Navbar = (props) => {
   return (
     <div>
       <RSNavbar color="dark" dark expand="md">
-        <NavbarBrand>
+        <NavItem>
           <Link className="navbar-brand" to="/">
             🏠Signal House🏠
           </Link>
-        </NavbarBrand>
+        </NavItem>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar>

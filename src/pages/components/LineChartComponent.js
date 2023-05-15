@@ -23,7 +23,7 @@ class LineChartComponent extends Component {
         <ReferenceLine y={entradas[0]} label="Entrada1" stroke="#d7f542" />
         <ReferenceLine y={entradas[1]} label="Entrada2" stroke="#d7f542" />
         {alvos.map((alvo, index) => (
-            <ReferenceLine y={alvo} label={`Alvo ${index+1}`} stroke="#42f569" />
+            <ReferenceLine key={index} y={alvo} label={`Alvo ${index+1}`} stroke="#42f569" />
         ))}
         <ReferenceLine y={stop} label="Stop" stroke="#f54242" />
         <Tooltip content={<CustomTooltip />} />
