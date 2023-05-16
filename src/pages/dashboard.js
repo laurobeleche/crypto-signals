@@ -9,6 +9,11 @@ import StatusAlert from './components/Status-Alert'; // Importe o componente Sta
 import BarChart from './components/Bar-Chart';
 
 function Dashboard(props) {
+  const [sinais, setSinais] = useState([]);
+  const [feito, setFeito] = useState(false);
+  const [sinaisAbertos, setSinaisAbertos] = useState([]);
+  const [sinaisGain, setSinaisGain] = useState([]);
+  const [sinaisLoss, setSinaisLoss] = useState([]);
 
   const { userStatus, isAdmin } = props;
   const formatDate = (dateString) => {
@@ -16,9 +21,33 @@ function Dashboard(props) {
     return format(date, 'yyyy-MM-dd');
   };
 
+  const fetchSignals = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_ADDRESS}getSignals.php`
+      );
+      const data = response.data.data;
+      setSinais(data);
+
+      const sinaisAbertos = data.filter(signal => [0, 1, 2].includes(signal.status));
+      const sinaisGain = data.filter(signal => signal.status === 3);
+      const sinaisLoss = data.filter(signal => signal.status === 4);
+
+      setSinaisAbertos(sinaisAbertos);
+      setSinaisGain(sinaisGain);
+      setSinaisLoss(sinaisLoss);
+
+      setFeito(true);
+    } catch (error) {
+      console.error("Erro ao buscar sinais:", error);
+    }
+  };
+
   useEffect(() => {
-    
-  }, []);
+    if (!feito) {
+      fetchSignals(); // Chame a função fetchSignals no useEffect
+    }
+  }, [feito]);
 
   return (
     <div style={{backgroundColor: '#dddddd', paddingBottom: 20}}>
@@ -42,7 +71,7 @@ function Dashboard(props) {
                 </Card>
               </Col>
             </Row>
-            <Row className="h-100">
+            <Row className="h-100" id='tabs'>
               <Card>
                 <CardBody>
                 LOREN IPSUN
