@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import axios from 'axios';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, Container, CardHeader, CardBody } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Card, CardText, Row, Container, CardHeader, CardBody } from 'reactstrap';
 import classnames from 'classnames';
 import { format } from 'date-fns';
 import withAuth from '../hoc/withAuth'; // Importe o HOC
@@ -61,22 +61,22 @@ function Dashboard(props) {
       <Container className="mt-4">
         <StatusAlert userStatus={userStatus} />
         <Row className="h-100 text-center justify-content-center" fluid="true">
-            <Card className="my-2 p-0" color="primary" inverse style={{ width: '18rem' }}>
+            <Card className="my-2 p-0" color="primary" inverse style={{ width: '10rem', margin: 5 }}>
               <CardHeader>SINAIS ABERTOS</CardHeader>
               <CardBody>
-                <CardText>{sinaisAbertos.length}</CardText>
+                <CardText>{sinaisAbertos.length} ( {((sinaisAbertos.length/sinais.length)*100).toFixed(2)}% )</CardText>
               </CardBody>
             </Card>
-            <Card className="my-2 p-0" color="success" inverse style={{ width: '18rem' }}>
+            <Card className="my-2 p-0" color="success" inverse style={{ width: '10rem', margin: 5  }}>
               <CardHeader>GAIN</CardHeader>
               <CardBody>
-                <CardText>{sinaisGain.length}</CardText>
+                <CardText>{sinaisGain.length} ( {((sinaisGain.length/sinais.length)*100).toFixed(2)}% )</CardText>
               </CardBody>
             </Card>
-            <Card className="my-2 p-0" color="danger" inverse style={{ width: '18rem' }}>
+            <Card className="my-2 p-0" color="danger" inverse style={{ width: '10rem', margin: 5  }}>
               <CardHeader>LOSS</CardHeader>
               <CardBody>
-                <CardText>{sinaisLoss.length}</CardText>
+                <CardText>{sinaisLoss.length} ( {((sinaisLoss.length/sinais.length)*100).toFixed(2)}% )</CardText>
               </CardBody>
             </Card>
         </Row>
