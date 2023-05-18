@@ -1,5 +1,5 @@
 {
-  "name": "criptoalpha",
+  "name": "crypto-signals",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -24,10 +24,10 @@
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.11.0",
+    "react-router-dom": "^6.11.2",
     "react-scripts": "5.0.1",
     "react-tooltip": "^5.11.2",
-    "reactstrap": "^9.1.9",
+    "reactstrap": "^9.1.10",
     "recharts": "^2.6.2",
     "sass": "^1.62.1",
     "stream": "^0.0.2",

@@ -9,13 +9,11 @@ import {
   ListGroupItem,
   ListGroupItemHeading,
   CardFooter,
-  Button,
 } from "reactstrap";
 import { format } from "date-fns";
 import EntradaTooltip from "./EntradaToolTip";
 import LineChartComponent from "./LineChartComponent";
 import axios from "axios";
-import html2canvas from 'html2canvas';
 
 
 const SignalCard = ({ signal }) => {
@@ -25,15 +23,6 @@ const SignalCard = ({ signal }) => {
   const alvos_at = signal.alvos_at ? signal.alvos_at.split(",") : [];
   const [chartData, setChartData] = useState([]);
   const cardRef = useRef();
-
-  const saveAsPNG = async () => {
-    const canvas = await html2canvas(cardRef.current);
-    const imgData = canvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.href = imgData;
-    link.download = 'card.png';
-    link.click();
-  };
 
   entradas.sort((a, b) => {
     return b - a;

@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import axios from 'axios';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Card, CardText, Row, Container, CardHeader, CardBody } from 'reactstrap';
 import classnames from 'classnames';
-import { format } from 'date-fns';
 import withAuth from '../hoc/withAuth'; // Importe o HOC
 import StatusAlert from './components/Status-Alert'; // Importe o componente StatusAlert
 import SignalCard from './components/Signal-Card';
@@ -22,10 +21,6 @@ function Dashboard(props) {
   const [sinaisLoss, setSinaisLoss] = useState([]);
 
   const { userStatus, isAdmin } = props;
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return format(date, 'yyyy-MM-dd');
-  };
 
   const fetchSignals = async () => {
     try {
